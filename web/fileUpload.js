@@ -1,4 +1,6 @@
 var http = require('http');
+var formidable = require('formidable');
+
 var server = http.createServer(function(req,res) {
 	switch(req.method) {
 		case 'GET':
@@ -22,7 +24,37 @@ function show(req, res) {
 }
 
 function upload(req, res) {
+	if(!isFormData(req)) {
+		res.statusCode = 400;
+		res.end('Bad request.');
+		return;
+	} 
+	var form = new formidable.IncomingForm();
+	/*form.parse(req, function(err, fields, files) {
+		console.log(fields);
+		console.log(files);
+		res.end('upload success.');
+	});*/
+	form.on('field', function(field, value) {
+		console.log('field:'+field);
+		console.log('value:'+value);
+	});
+	form.on('file',function(name,file) {
+		console.log(name);
+		console.log(file);
+	});
+	form.on('end', function(){
+		res.end('upload success.');
+	});
+	form.on('progress', function(bytesReceived,bytesExpected) {
+		var percent = Math.floor(bytesReceived/bytesExpected * 100);
+		console.log(percent);
+	});
+}
 
+function isFormData(req) {
+	var type = req.headers['content-type'] || '';
+	return 0 == type.indexOf('multipart/form-data');
 }
 
 server.listen(3000);
