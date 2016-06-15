@@ -1,0 +1,18 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var ws = new WebSocket('ws://localhost:3000');
+			ws.onopen = function(event) {
+				ws.send('front-end message: ABC');
+			}
+			ws.onmessage = function(event) {
+				console.log('Server message:', event.data);	
+			}
+			ws.onerror = function(event) {
+				console.log('server error:', event.data);
+			}
+		</script>
+	</body>
+</html>
