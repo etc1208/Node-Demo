@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+//var multer = require('multer'); 
 var http = require('http');
 
 var routes = require('./routes/index');
@@ -22,6 +23,7 @@ app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(multer()); // for parsing multipart/form-data
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -63,4 +65,4 @@ http.createServer(app).listen(app.get('port'), function() {
   console.log('Server listening on:'+ app.get('port'));
 });
 
-module.exports = app;
+//module.exports = app;
