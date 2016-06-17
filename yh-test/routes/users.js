@@ -51,16 +51,20 @@ router.get('/', function(req, res) {
 });
 */
 
+router.get('/update', function(req, res, next) {
+	userDao.updateByName(req, res);
+});
+
+router.get('/addUser', function(req, res, next) {
+	userDao.addUser(req, res);
+});
+
 router.get('/:id', function(req, res, next) {
 	userDao.getUserById(req, res);
 });
 
 router.get('/delete/:id', function(req, res, next) {
 	userDao.deleteById(req, res);
-});
-
-router.get('/update', function(req, res, next) {
-	userDao.updateByName(req, res);
 });
 
 module.exports = router;

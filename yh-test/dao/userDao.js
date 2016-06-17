@@ -29,7 +29,8 @@ module.exports = {
 			if(err) throw err;
 			if(rows.length === 0) {
 				res.json({
-					success: false
+					success: false,
+					message: "no such user"
 				});
 			} else {
 				var result = {
@@ -52,7 +53,7 @@ module.exports = {
 			if(rows.affectedRows === 0) {
 				res.json({
 					success: false,
-					message: 'no such user'
+					message: 'no such user to delete'
 				});
 			} else {
 				res.json({
@@ -65,7 +66,57 @@ module.exports = {
 	},
 
 	updateByName: function(req, res) {
-		connection.query($sql.update);
+		if(!req.query.pwd || !req.query.profession || !req.query.name) {
+			res.json({
+				success: false,
+				message: 'lack parameter'
+			});
+			return;
+		}
+		connection.query(
+			$sql.update, 
+			[req.query.pwd, req.query.profession, req.query.name], 
+			function(err, rows, fields) {
+				if(err) throw err;
+				if(rows.affectedRows === 0) {
+					res.json({
+						success: false,
+						message: 'no such user to update'
+					});
+				} else {
+					res.json({
+						success: true,
+						message: 'update success'
+					});
+				}
+			});
+	},
+
+	addUser: function(req, res) {
+		if(!req.query.pwd || !req.query.profession || !req.query.name) {
+			res.json({
+				success: false,
+				message: 'lack parameter'
+			});
+			return;
+		}
+		connection.query(
+			$sql.insert,
+			[req.query.name, req.query.pwd, req.query.profession],
+			function(err, rows, fields) {
+				if(err) throw err;
+				if(rows.affectedRows === 0) {
+					res.json({
+						success: false,
+						message: 'fail to add user'
+					});
+				} else {
+					res.json({
+						success: true,
+						message: 'add user success'
+					});
+				}
+			});
 	}
 };
 
