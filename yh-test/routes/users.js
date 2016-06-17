@@ -4,8 +4,6 @@ var userDao = require('../dao/userDao');
 
 //var users = require('../user.json');
 
-
-
 /*router.get('/', function(req, res, next) {
   res.render('users/index', {users:users});
 });
@@ -30,15 +28,9 @@ router.post('/addUser', function(req, res) {
 		users[req.body.name] = req.body;
 		res.redirect('/users');
 	}
-});*/
-
-/*Restful API*/
-
-router.get('/', function(req, res) {
-	userDao.getUsers(req, res);
 });
 
-/*router.post('/addUser', function(req, res, next) {
+router.post('/addUser', function(req, res, next) {
 	var body = '';
 	req.on('data', function(data) {
 		body += data;
@@ -48,8 +40,13 @@ router.get('/', function(req, res) {
 		users['user'+json.id] = body;
 		res.send({message:'user added', success: 'true'});
 	});
+});*/
+
+
+/*Restful API*/
+router.get('/', function(req, res) {
+	userDao.getUsers(req, res);
 });
-*/
 
 router.get('/update', function(req, res, next) {
 	userDao.updateByName(req, res);
@@ -65,6 +62,11 @@ router.get('/:id', function(req, res, next) {
 
 router.get('/delete/:id', function(req, res, next) {
 	userDao.deleteById(req, res);
+});
+
+router.post('/addUser', function(req, res, next) {
+	console.log(req);
+	userDao.addUserPost(req, res);
 });
 
 module.exports = router;
