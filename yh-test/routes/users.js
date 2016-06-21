@@ -65,7 +65,6 @@ router.get('/delete/:id', function(req, res, next) {
 });
 
 router.post('/addUser', function(req, res, next) {
-	console.log(req);
 	userDao.addUserPost(req, res);
 });
 

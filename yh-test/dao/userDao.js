@@ -119,33 +119,40 @@ module.exports = {
 			});
 	},
 
-//TODO post获取req.body为空
 	addUserPost: function(req, res) {
-		//console.log(req.body);
-		if(!req.body.name || !req.body.pwd || !req.body.profession) {
-			res.json({
-				success: false,
-				message: 'lack parameter, add user by post fail'
-			});
-			return;
-		}
-		connection.query(
-			$sql.insert,
-			[req.body.name, req.body.pwd, req.body.profession],
-			function(err, rows, fields) {
-				if(err) throw err;
-				if(rows.affectedRows === 0) {
-					res.json({
-						success: false,
-						message: 'fail to add user by post'
-					});
-				} else {
-					res.json({
-						success: true,
-						message: 'add user by post success'
-					});
+		var body = '';
+		req.on('data', function(data) {
+			body += data;
+		});
+		req.on('end', function() {
+			var postData = JSON.parse(body);
+			console.log(postData)
+			if(!postData.name || !postData.pwd || !postData.profession) {
+				res.json({
+					success: false,
+					message: 'lack parameter, add user by post fail'
+				});
+				return;
+			}
+			connection.query(
+				$sql.insert,
+				[postData.name, postData.pwd, postData.profession],
+				function(err, rows, fields) {
+					if(err) throw err;
+					if(rows.affectedRows === 0) {
+						res.json({
+							success: false,
+							message: 'fail to add user by post'
+						});
+					} else {
+						res.json({
+							success: true,
+							message: 'add user by post success'
+						});
+					}
 				}
-			});
+			);
+		});	
 	}
 };
 
